@@ -1,0 +1,359 @@
+{
+  "entities": {
+    "LearningPlan": {
+      "title": "LearningPlan",
+      "description": "Capaian Pembelajaran (CP) document",
+      "type": "object",
+      "properties": {
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "phase": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "elements": { "type": "array" },
+        "description": { "type": "string" },
+        "source": { "type": "string" },
+        "status": { "type": "string" },
+        "version": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["teacherId", "subjectId", "phase", "academicYear", "semester", "description", "status"]
+    },
+    "LearningObjective": {
+      "title": "LearningObjective",
+      "description": "Tujuan Pembelajaran (TP) document",
+      "type": "object",
+      "properties": {
+        "cpId": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "phase": { "type": "string" },
+        "code": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "sequence": { "type": "number" },
+        "allocationHours": { "type": "number" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "status": { "type": "string" },
+        "version": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["cpId", "teacherId", "subjectId", "code", "title", "academicYear", "semester", "status"]
+    },
+    "ATP": {
+      "title": "ATP",
+      "description": "Alur Tujuan Pembelajaran document",
+      "type": "object",
+      "properties": {
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "phase": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "totalHours": { "type": "number" },
+        "items": { "type": "array" },
+        "status": { "type": "string" },
+        "version": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["teacherId", "subjectId", "phase", "academicYear", "semester", "items", "status"]
+    },
+    "Prota": {
+      "title": "Prota",
+      "description": "Program Tahunan document",
+      "type": "object",
+      "properties": {
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "phase": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "totalHours": { "type": "number" },
+        "items": { "type": "array" },
+        "status": { "type": "string" },
+        "version": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["teacherId", "subjectId", "academicYear", "items", "status"]
+    },
+    "Promes": {
+      "title": "Promes",
+      "description": "Program Semester document",
+      "type": "object",
+      "properties": {
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "phase": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "months": { "type": "array" },
+        "totalHours": { "type": "number" },
+        "items": { "type": "array" },
+        "status": { "type": "string" },
+        "version": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["teacherId", "subjectId", "academicYear", "semester", "items", "status"]
+    },
+    "ModuleAjar": {
+      "title": "ModuleAjar",
+      "description": "Modul Ajar Kurikulum Merdeka document",
+      "type": "object",
+      "properties": {
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "title": { "type": "string" },
+        "phase": { "type": "string" },
+        "duration": { "type": "string" },
+        "initialCompetence": { "type": "string" },
+        "facilities": { "type": "string" },
+        "targetStudents": { "type": "string" },
+        "learningModel": { "type": "string" },
+        "methods": { "type": "array" },
+        "cpText": { "type": "string" },
+        "tpText": { "type": "string" },
+        "material": { "type": "string" },
+        "meaningfulUnderstanding": { "type": "string" },
+        "triggerQuestions": { "type": "string" },
+        "openingActivity": { "type": "string" },
+        "coreActivity": { "type": "string" },
+        "closingActivity": { "type": "string" },
+        "assessment": { "type": "string" },
+        "enrichment": { "type": "string" },
+        "remediation": { "type": "string" },
+        "teacherReflection": { "type": "string" },
+        "studentReflection": { "type": "string" },
+        "status": { "type": "string" },
+        "version": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["teacherId", "subjectId", "classId", "academicYear", "semester", "title", "status"]
+    },
+    "KKTP": {
+      "title": "KKTP",
+      "description": "Kriteria Ketercapaian Tujuan Pembelajaran document",
+      "type": "object",
+      "properties": {
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "phase": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "items": { "type": "array" },
+        "status": { "type": "string" },
+        "version": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["teacherId", "subjectId", "academicYear", "semester", "items", "status"]
+    },
+    "AcademicCalendar": {
+      "title": "AcademicCalendar",
+      "description": "Academic calendar with effective days & weeks",
+      "type": "object",
+      "properties": {
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "months": { "type": "array" },
+        "events": { "type": "array" },
+        "totalEffectiveWeeks": { "type": "number" },
+        "totalEffectiveDays": { "type": "number" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["academicYear", "semester", "months"]
+    },
+    "Assessment": {
+      "title": "Assessment",
+      "description": "Assessment metadata created by teacher",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "type": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "objectiveIds": { "type": "array" },
+        "date": { "type": "string" },
+        "material": { "type": "string" },
+        "weight": { "type": "number" },
+        "maxScore": { "type": "number" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "status": { "type": "string" },
+        "isLocked": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "type", "teacherId", "subjectId", "classId", "academicYear", "semester", "status"]
+    },
+    "Grade": {
+      "title": "Grade",
+      "description": "Individual student grade record for an assessment",
+      "type": "object",
+      "properties": {
+        "assessmentId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "score": { "type": "number" },
+        "note": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "isLocked": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["assessmentId", "studentId", "teacherId", "subjectId", "classId", "score", "academicYear", "semester"]
+    },
+    "AssessmentConfig": {
+      "title": "AssessmentConfig",
+      "description": "Assessment scale, rounding, categories, and calculation configurations",
+      "type": "object",
+      "properties": {
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "gradingScale": { "type": "object" },
+        "rounding": { "type": "string" },
+        "calculationMethod": { "type": "string" },
+        "categories": { "type": "array" },
+        "customAssessmentTypes": { "type": "array" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["academicYear", "semester", "gradingScale", "rounding", "calculationMethod", "categories"]
+    },
+    "StudentDescription": {
+      "title": "StudentDescription",
+      "description": "Formative and summative learning achievement qualitative description for student",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "classId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "tpDescriptions": { "type": "array" },
+        "strengthsText": { "type": "string" },
+        "improvementsText": { "type": "string" },
+        "finalDescription": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["studentId", "classId", "subjectId", "teacherId", "academicYear", "semester", "finalDescription"]
+    },
+    "AssessmentFollowUp": {
+      "title": "AssessmentFollowUp",
+      "description": "Remedial, enrichment, and additional guidance follow up actions",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classId": { "type": "string" },
+        "type": { "type": "string" },
+        "date": { "type": "string" },
+        "description": { "type": "string" },
+        "result": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["studentId", "teacherId", "subjectId", "classId", "type", "date", "description", "result"]
+    },
+    "FinalScore": {
+      "title": "FinalScore",
+      "description": "Calculated final score for student per subject & semester",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "classId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "semester": { "type": "string" },
+        "finalScore": { "type": "number" },
+        "finalScoreRounded": { "type": "number" },
+        "isLocked": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["studentId", "classId", "subjectId", "academicYear", "semester", "finalScore"]
+    }
+  },
+  "firestore": {
+    "/learningPlans/{cpId}": {
+      "schema": "LearningPlan",
+      "description": "Capaian Pembelajaran collections"
+    },
+    "/learningObjectives/{tpId}": {
+      "schema": "LearningObjective",
+      "description": "Tujuan Pembelajaran collections"
+    },
+    "/atp/{atpId}": {
+      "schema": "ATP",
+      "description": "Alur Tujuan Pembelajaran collections"
+    },
+    "/prota/{protaId}": {
+      "schema": "Prota",
+      "description": "Program Tahunan collections"
+    },
+    "/promes/{promesId}": {
+      "schema": "Promes",
+      "description": "Program Semester collections"
+    },
+    "/modules/{moduleId}": {
+      "schema": "ModuleAjar",
+      "description": "Modul Ajar collections"
+    },
+    "/kktp/{kktpId}": {
+      "schema": "KKTP",
+      "description": "KKTP collections"
+    },
+    "/academicCalendar/{calendarId}": {
+      "schema": "AcademicCalendar",
+      "description": "Kalender akademik madrasah"
+    },
+    "/assessments/{assessmentId}": {
+      "schema": "Assessment",
+      "description": "Data asesmen pembelajaran guru"
+    },
+    "/grades/{gradeId}": {
+      "schema": "Grade",
+      "description": "Data nilai siswa per asesmen"
+    },
+    "/assessmentConfigs/{configId}": {
+      "schema": "AssessmentConfig",
+      "description": "Konfigurasi penilaian dan pembobotan nilai"
+    },
+    "/studentDescriptions/{descId}": {
+      "schema": "StudentDescription",
+      "description": "Deskripsi capaian pembelajaran siswa"
+    },
+    "/assessmentFollowUps/{followUpId}": {
+      "schema": "AssessmentFollowUp",
+      "description": "Data tindak lanjut remedial dan pengayaan"
+    },
+    "/finalScores/{scoreId}": {
+      "schema": "FinalScore",
+      "description": "Data rekapitulasi nilai akhir siswa"
+    }
+  }
+}

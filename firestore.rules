@@ -1,0 +1,140 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'wahidhida17@gmail.com' ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
+      );
+    }
+    
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    // Users collection: All authenticated users can read, user can manage own doc or admin
+    match /users/{uid} {
+      allow read: if true;
+      allow create, update: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+    
+    // Settings collection
+    match /settings/{document} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Audit Logs
+    match /auditLogs/{logId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+
+    // Data Master (Guru, Siswa, Kelas, Mapel, Penugasan, Jadwal)
+    match /teachers/{teacherId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /students/{studentId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /classes/{classId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /subjects/{subjectId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /assignments/{assignmentId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /schedules/{scheduleId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Absensi & Jurnal
+    match /attendance/{attendanceId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /journals/{journalId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Administrasi Pembelajaran (CP, TP, ATP, Prota, Promes, Modul, KKTP)
+    match /learningPlans/{cpId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /learningObjectives/{tpId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /atp/{atpId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /prota/{protaId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /promes/{promesId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /modules/{moduleId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /kktp/{kktpId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /academicCalendar/{calendarId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /documentTemplates/{templateId} { allow read: if true; allow write: if isAuthenticated(); }
+
+    // Penilaian & Nilai
+    match /assessments/{assessmentId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /grades/{gradeId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /assessmentConfigs/{configId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /studentDescriptions/{descId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /assessmentFollowUps/{followUpId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /finalScores/{scoreId} { allow read: if true; allow write: if isAuthenticated(); }
+
+    // Rapor & Kenaikan Kelas
+    match /reportPeriods/{periodId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /reports/{reportId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /reportExtracurriculars/{id} { allow read: if true; allow write: if isAuthenticated(); }
+    match /reportAchievements/{id} { allow read: if true; allow write: if isAuthenticated(); }
+    match /reportNotes/{id} { allow read: if true; allow write: if isAuthenticated(); }
+    match /reportArchives/{archiveId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /gradeChangeRequests/{requestId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /reportTemplates/{templateId} { allow read: if true; allow write: if isAuthenticated(); }
+    match /reportSettings/{settingId} { allow read: if true; allow write: if isAuthenticated(); }
+
+    // Dokumen, Kalender, Agenda, Pengingat, Surat & Notifikasi
+    match /documents/{documentId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /calendarEvents/{eventId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /agendas/{agendaId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /reminders/{reminderId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /letters/{letterId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /notifications/{notificationId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+  }
+}

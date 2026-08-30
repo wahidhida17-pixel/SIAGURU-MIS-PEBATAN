@@ -1,0 +1,6 @@
+{
+  "name": "SIAGURU MI SYURIYAH PEBATAN",
+  "description": "Sistem Administrasi Guru MI Syuriyah Pebatan",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

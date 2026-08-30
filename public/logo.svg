@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Gradients for realistic look -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    
+    <radialGradient id="globeGrad" cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#4ba3e3" />
+      <stop offset="70%" stop-color="#216fa8" />
+      <stop offset="100%" stop-color="#144d77" />
+    </radialGradient>
+
+    <linearGradient id="goldArch" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="50%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#16a34a" />
+      <stop offset="100%" stop-color="#065f46" />
+    </linearGradient>
+
+    <!-- Curved Text Path for MADRASAH IBTIDAIYAH -->
+    <path id="textPathTop" d="M 125 240 A 130 130 0 0 1 375 240" fill="none" />
+  </defs>
+
+  <!-- Base Black Backdrop Circle -->
+  <circle cx="250" cy="250" r="248" fill="#0b0f19" />
+
+  <!-- Outer White Boundary Ring -->
+  <circle cx="250" cy="250" r="242" fill="none" stroke="#ffffff" stroke-width="4.5" />
+
+  <!-- 16-Pointed Islamic Rosette / Geometric Star Pattern -->
+  <!-- Outer Light Green Petals (#8DC63F / #7cb342) -->
+  <g fill="#88c934" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round">
+    <!-- 8 Primary Outer Points -->
+    <polygon points="250,14 274,68 318,28 326,86 384,62 372,120 438,114 406,166 476,180 426,224 486,250 426,276 476,320 406,334 438,386 372,380 384,438 326,414 318,472 274,432 250,486 226,432 182,472 174,414 116,438 128,380 62,386 94,334 24,320 74,276 14,250 74,224 24,180 94,166 62,114 128,120 116,62 174,86 182,28 226,68" />
+  </g>
+
+  <!-- Mid Dark Forest Green Geometric Facets (#137333 / #0a5c28) -->
+  <g fill="#0e682e" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round">
+    <polygon points="250,62 284,104 336,78 350,132 408,126 398,182 452,198 420,250 452,302 398,318 408,374 350,368 336,422 284,396 250,438 216,396 164,422 150,368 92,374 102,318 48,302 80,250 48,198 102,182 92,126 150,132 164,78 216,104" />
+  </g>
+
+  <!-- Inner Medium Green Star Points (#198754) -->
+  <g fill="#15803d" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">
+    <polygon points="250,96 288,138 344,120 358,176 410,182 396,238 430,280 384,308 392,364 338,368 322,416 270,396 250,428 230,396 178,416 162,368 108,364 116,308 70,280 104,238 90,182 142,176 156,120 212,138" />
+  </g>
+
+  <!-- Inner Green Circle Ring -->
+  <circle cx="250" cy="250" r="162" fill="#0f7638" stroke="#ffffff" stroke-width="4.5" />
+
+  <!-- Inner Globe Background (Blue Sphere) -->
+  <circle cx="250" cy="245" r="118" fill="url(#globeGrad)" stroke="#ffffff" stroke-width="3.5" />
+
+  <!-- Globe Latitude and Longitude Grid Lines -->
+  <g stroke="#ffffff" stroke-width="1.8" fill="none" opacity="0.85">
+    <!-- Equator and parallels -->
+    <ellipse cx="250" cy="245" rx="118" ry="38" />
+    <ellipse cx="250" cy="215" rx="106" ry="30" />
+    <ellipse cx="250" cy="275" rx="106" ry="30" />
+    <ellipse cx="250" cy="180" rx="80" ry="22" />
+    <ellipse cx="250" cy="310" rx="80" ry="22" />
+    
+    <!-- Longitude meridians -->
+    <ellipse cx="250" cy="245" rx="38" ry="118" />
+    <ellipse cx="250" cy="245" rx="78" ry="118" />
+    <line x1="250" y1="127" x2="250" y2="363" />
+  </g>
+
+  <!-- Continent / Map Outline Silhouette at Bottom Right -->
+  <path d="M 290 280 Q 320 260 340 285 Q 360 300 350 325 Q 330 345 300 335 Q 285 315 290 280 Z" fill="#ffffff" opacity="0.9" />
+
+  <!-- Minaret / Pen Tower in the Center -->
+  <!-- Pen Nib (Top) -->
+  <polygon points="250,140 242,170 258,170" fill="#2d3748" stroke="#ffffff" stroke-width="1.5" />
+  <circle cx="250" cy="155" r="2.5" fill="#f8fafc" />
+  <!-- White Pen Ring Divider -->
+  <rect x="240" y="170" width="20" height="7" rx="2" fill="#ffffff" />
+  <!-- Pen Body / Minaret Pillar -->
+  <path d="M 241 177 L 243 275 L 257 275 L 259 177 Z" fill="#1e293b" stroke="#ffffff" stroke-width="1.5" />
+  <line x1="250" y1="177" x2="250" y2="275" stroke="#475569" stroke-width="1.5" />
+
+  <!-- Open Book (Kitab / Al-Qur'an) -->
+  <g id="openBook">
+    <!-- Rehal / Wooden Stand Base -->
+    <polygon points="215,305 250,285 285,305 270,318 250,302 230,318" fill="#94a3b8" stroke="#334155" stroke-width="2" />
+
+    <!-- Left Book Page Group -->
+    <path d="M 248 285 Q 200 280 155 235 Q 165 220 215 215 Q 238 245 248 285 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" stroke-linejoin="round" />
+    <!-- Left Page Lines -->
+    <path d="M 172 235 Q 205 230 236 248" stroke="#64748b" stroke-width="1.8" fill="none" />
+    <path d="M 170 245 Q 203 240 238 258" stroke="#64748b" stroke-width="1.8" fill="none" />
+    <path d="M 168 255 Q 201 250 240 268" stroke="#64748b" stroke-width="1.8" fill="none" />
+    <path d="M 170 265 Q 203 260 242 277" stroke="#64748b" stroke-width="1.8" fill="none" />
+
+    <!-- Right Book Page Group -->
+    <path d="M 252 285 Q 300 280 345 235 Q 335 220 285 215 Q 262 245 252 285 Z" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" stroke-linejoin="round" />
+    <!-- Right Page Lines -->
+    <path d="M 328 235 Q 295 230 264 248" stroke="#64748b" stroke-width="1.8" fill="none" />
+    <path d="M 330 245 Q 297 240 262 258" stroke="#64748b" stroke-width="1.8" fill="none" />
+    <path d="M 332 255 Q 299 250 260 268" stroke="#64748b" stroke-width="1.8" fill="none" />
+    <path d="M 330 265 Q 297 260 258 277" stroke="#64748b" stroke-width="1.8" fill="none" />
+
+    <!-- Book Spine Center -->
+    <path d="M 248 285 L 250 220 L 252 285 Z" fill="#cbd5e1" stroke="#334155" stroke-width="1.5" />
+  </g>
+
+  <!-- Upper Arch Banner for 'MADRASAH IBTIDAIYAH' -->
+  <!-- Outer Arch Outline -->
+  <path d="M 108 265 A 146 146 0 0 1 392 265 L 400 230 A 156 156 0 0 0 100 230 Z" fill="#ffffff" stroke="#f97316" stroke-width="5" stroke-linejoin="round" />
+  
+  <!-- Curved Text: MADRASAH IBTIDAIYAH -->
+  <text font-family="'Arial Black', 'Impact', 'Montserrat', sans-serif" font-size="27" font-weight="900" fill="#1e293b" letter-spacing="3.5">
+    <textPath href="#textPathTop" startOffset="50%" text-anchor="middle">
+      MADRASAH IBTIDAIYAH
+    </textPath>
+  </text>
+
+  <!-- Bottom Ribbon Banner for 'SYURIYAH' -->
+  <g id="bottomRibbon">
+    <!-- Ribbon Left Fold / Swallow-tail -->
+    <polygon points="152,360 178,328 178,375 138,375" fill="#044d2d" stroke="#ffffff" stroke-width="2.5" />
+    <polygon points="152,360 138,375 160,392 188,392 178,375" fill="#0b5e37" stroke="#ffffff" stroke-width="2.5" />
+
+    <!-- Ribbon Right Fold / Swallow-tail -->
+    <polygon points="348,360 322,328 322,375 362,375" fill="#044d2d" stroke="#ffffff" stroke-width="2.5" />
+    <polygon points="348,360 362,375 340,392 312,392 322,375" fill="#0b5e37" stroke="#ffffff" stroke-width="2.5" />
+
+    <!-- Main Central Ribbon Body -->
+    <path d="M 168 328 L 332 328 L 322 378 L 178 378 Z" fill="url(#ribbonGrad)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+    
+    <!-- Text SYURIYAH -->
+    <text x="250" y="364" font-family="'Arial Black', 'Trebuchet MS', sans-serif" font-size="30" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="4.5">
+      SYURIYAH
+    </text>
+  </g>
+</svg>
