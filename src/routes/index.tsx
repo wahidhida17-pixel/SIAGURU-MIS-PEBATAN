@@ -95,6 +95,7 @@ import { AdminTrashView as AdminDocumentTrashView } from '../pages/admin/documen
 
 import { AdminCalendarView } from '../pages/admin/calendar/AdminCalendarView';
 import { AdminRemindersView } from '../pages/admin/calendar/AdminRemindersView';
+import { AccountSettings } from '../pages/admin/settings/AccountSettings';
 
 // Phase 8: Headmaster
 import { HeadmasterDashboardView } from '../pages/headmaster/dashboard/HeadmasterDashboardView';
@@ -189,7 +190,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="calendar" element={<AdminCalendarView />} />
         <Route path="calendar/reminders" element={<AdminRemindersView />} />
 
-        <Route path="pengaturan" element={<ComingSoon />} />
+        <Route path="pengaturan" element={<AccountSettings />} />
         <Route path="profile" element={<Profile />} />
       </Route>
 
