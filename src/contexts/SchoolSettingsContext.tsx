@@ -54,6 +54,33 @@ export const SchoolSettingsProvider: React.FC<{ children: React.ReactNode }> = (
       } else if (newSettings.logoURL) {
         setLinkRef('apple-touch-icon', newSettings.logoURL);
       }
+      
+      // Update PWA manifest dynamically
+      const iconUrl = newSettings.appIconURL || newSettings.logoURL || '/logo.svg';
+      const manifest = {
+        name: newSettings.schoolName ? `SIAGURU ${newSettings.schoolName.toUpperCase()}` : 'SIAGURU MI SYURIYAH PEBATAN',
+        short_name: 'SIAGURU',
+        description: `Sistem Administrasi Guru ${newSettings.schoolName || 'MI Syuriyah Pebatan'}`,
+        theme_color: '#059669',
+        background_color: '#ffffff',
+        display: 'standalone',
+        icons: [
+          {
+            src: iconUrl,
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: iconUrl,
+            sizes: '512x512',
+            type: 'image/png'
+          }
+        ]
+      };
+      const stringManifest = JSON.stringify(manifest);
+      const blob = new Blob([stringManifest], { type: 'application/json' });
+      const manifestURL = URL.createObjectURL(blob);
+      setLinkRef('manifest', manifestURL);
     });
 
     return () => {
