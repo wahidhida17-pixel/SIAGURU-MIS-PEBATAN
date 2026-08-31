@@ -48,6 +48,7 @@ export const AdminLayout: React.FC = () => {
     { name: 'Monitoring Guru', href: '/admin/documents/monitoring', icon: ClipboardList },
     { name: 'Kalender Akademik', href: '/admin/calendar', icon: CalendarDays },
     { name: 'Monitoring KBM', href: '/admin/monitoring', icon: Activity },
+    { name: 'Akun Pengguna', href: '/admin/pengguna', icon: Users },
     { name: 'Pengaturan Sekolah', href: '/admin/pengaturan', icon: Settings },
     { name: 'Profil', href: '/admin/profile', icon: User },
   ];

@@ -1,25 +1,19 @@
-import { 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword,
-  signOut, 
-  sendPasswordResetEmail,
-  type User
-} from 'firebase/auth';
-import { auth } from '../firebase/auth';
+const fs = require('fs');
+
+const path = 'src/services/authService.ts';
+let content = fs.readFileSync(path, 'utf8');
+
+const importTarget = `import { auth } from '../firebase/auth';`;
+const importReplacement = `import { auth } from '../firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 // Secondary app trick to create users without logging out
 // We can just rely on the existing VITE_FIREBASE config from import.meta.env
+`;
+content = content.replace(importTarget, importReplacement);
 
-
-export const authService = {
-  async login(email: string, password: string): Promise<User> {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
-  },
-
-  
+const newMethods = `
   async createSecondaryUser(email: string, password: string): Promise<User> {
     const config = {
       apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -37,21 +31,7 @@ export const authService = {
     } catch (error) {
       throw error;
     }
-  },
-  async register(email: string, password: string): Promise<User> {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
-  },
+  },`;
 
-  async logout(): Promise<void> {
-    await signOut(auth);
-  },
-
-  async resetPassword(email: string): Promise<void> {
-    await sendPasswordResetEmail(auth, email);
-  },
-
-  getCurrentUser(): User | null {
-    return auth.currentUser;
-  }
-};
+content = content.replace(/async register\(/, newMethods + '\n  async register(');
+fs.writeFileSync(path, content, 'utf8');

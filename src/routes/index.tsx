@@ -97,6 +97,7 @@ import { AdminCalendarView } from '../pages/admin/calendar/AdminCalendarView';
 import { AdminRemindersView } from '../pages/admin/calendar/AdminRemindersView';
 import { SchoolSettings } from '../pages/admin/settings/SchoolSettings';
 import { AccountSettings } from '../pages/admin/settings/AccountSettings';
+import { UserList } from '../pages/admin/users/UserList';
 
 // Phase 8: AI Guru Cerdas Madrasah
 import { AIGuruDashboard } from '../pages/guru/ai/AIGuruDashboard';
@@ -198,6 +199,8 @@ export const AppRoutes: React.FC = () => {
         <Route path="settings" element={<SchoolSettings />} />
         <Route path="pengaturan/sekolah" element={<SchoolSettings />} />
         <Route path="pengaturan/akun" element={<AccountSettings />} />
+        <Route path="users" element={<UserList />} />
+        <Route path="pengguna" element={<UserList />} />
         <Route path="profile" element={<Profile />} />
       </Route>
 

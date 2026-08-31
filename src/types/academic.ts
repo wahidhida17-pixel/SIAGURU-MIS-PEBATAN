@@ -45,6 +45,8 @@ export interface GeneralSettings {
   logoURL: string;
   logoFoundationURL?: string;
   stampURL?: string;
+  appIconURL?: string;
+  faviconURL?: string;
 
   address: string;
   rtRw?: string;
