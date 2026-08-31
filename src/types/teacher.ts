@@ -12,6 +12,7 @@ export interface Teacher {
   phone: string;
   gender: 'L' | 'P';
   teacherType: TeacherType;
+  employmentStatus?: string;
   status: TeacherStatus;
   photoURL: string | null;
   createdAt: any;

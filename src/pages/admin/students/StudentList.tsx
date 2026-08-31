@@ -3,13 +3,19 @@ import { Plus, Edit2, Users, Eye, Download, Upload } from 'lucide-react';
 import { DataTable } from '../../../components/ui/DataTable';
 import { Button } from '../../../components/ui/Button';
 import { studentService } from '../../../services/studentService';
-import type { Student } from '../../../types/academic';
+import { classService } from '../../../services/classService';
+import type { Student, ClassData } from '../../../types/academic';
+import { StudentFormModal } from './StudentFormModal';
 
 export const StudentList: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
+  const [classes, setClasses] = useState<ClassData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [classFilter, setClassFilter] = useState('all');
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -18,13 +24,27 @@ export const StudentList: React.FC = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const data = await studentService.getAll();
-      setStudents(data);
+      const [studentsData, classesData] = await Promise.all([
+        studentService.getAll(),
+        classService.getAll()
+      ]);
+      setStudents(studentsData);
+      setClasses(classesData);
     } catch (error) {
-      console.error('Error fetching students:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleAdd = () => {
+    setSelectedStudent(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (student: Student) => {
+    setSelectedStudent(student);
+    setIsModalOpen(true);
   };
 
   const filteredData = students.filter(s => {
@@ -35,6 +55,11 @@ export const StudentList: React.FC = () => {
     return matchesSearch && matchesClass;
   });
 
+  const getClassName = (classId: string) => {
+    const cls = classes.find(c => c.id === classId);
+    return cls ? cls.name : classId;
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -43,13 +68,13 @@ export const StudentList: React.FC = () => {
           <p className="text-slate-500 text-sm mt-1">Kelola data siswa madrasah</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={() => alert('Import Excel')}>
+          <Button variant="outline" onClick={() => alert('Fitur Import Excel (segera hadir)')}>
             <Upload className="w-4 h-4 mr-2" /> Import
           </Button>
-          <Button variant="outline" onClick={() => alert('Export Excel')}>
+          <Button variant="outline" onClick={() => alert('Fitur Export Excel (segera hadir)')}>
             <Download className="w-4 h-4 mr-2" /> Export
           </Button>
-          <Button onClick={() => alert('Fitur tambah siswa')}>
+          <Button onClick={handleAdd}>
             <Plus className="w-4 h-4 mr-2" />
             Siswa
           </Button>
@@ -69,8 +94,9 @@ export const StudentList: React.FC = () => {
             className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-600"
           >
             <option value="all">Semua Kelas</option>
-            {/* TODO: Load active classes here */}
-            <option value="KLS-DEMO">Kelas Demo</option>
+            {classes.filter(c => c.status === 'active').map(c => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
           </select>
         }
         columns={[
@@ -92,7 +118,7 @@ export const StudentList: React.FC = () => {
             header: 'Kelas',
             cell: (item) => (
               <div className="text-sm font-medium text-slate-700">
-                {item.classId /* TODO: Map ID to name */}
+                {getClassName(item.classId)}
               </div>
             )
           },
@@ -112,16 +138,25 @@ export const StudentList: React.FC = () => {
             header: 'Aksi',
             cell: (item) => (
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={() => alert('Detail')}>
+                <Button variant="outline" size="sm" onClick={() => alert('Detail (segera hadir)')}>
                   <Eye className="w-3.5 h-3.5" />
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => alert('Edit')}>
+                <Button variant="outline" size="sm" onClick={() => handleEdit(item)}>
                   <Edit2 className="w-3.5 h-3.5" />
                 </Button>
               </div>
             )
           }
         ]}
+      />
+
+      <StudentFormModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={() => {
+          fetchData();
+        }}
+        student={selectedStudent}
       />
     </div>
   );

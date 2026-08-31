@@ -4,7 +4,11 @@ import { reminderService } from '../../services/reminderService';
 import type { AppNotification } from '../../types/calendar';
 import { useAuth } from '../../hooks/useAuth';
 
-export const NotificationBellDropdown: React.FC = () => {
+interface NotificationBellDropdownProps {
+  currentUser?: { uid: string; name?: string; role?: string };
+}
+
+export const NotificationBellDropdown: React.FC<NotificationBellDropdownProps> = () => {
   const { userProfile } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);

@@ -62,9 +62,9 @@ export const AdminAdministrationMonitoringView: React.FC = () => {
           academicYear: '2026/2027',
           semester: 'Ganjil',
           createdBy: userProfile.uid,
-          createdByName: userProfile.name
+          createdByName: userProfile.name || userProfile.displayName || 'Admin'
         },
-        userProfile
+        userProfile || undefined
       );
       alert(`Pengingat berhasil dikirim ke ${teacher.teacherName}!`);
     } catch (e: any) {
@@ -101,9 +101,9 @@ export const AdminAdministrationMonitoringView: React.FC = () => {
             academicYear: '2026/2027',
             semester: 'Ganjil',
             createdBy: userProfile.uid,
-            createdByName: userProfile.name
+            createdByName: userProfile.name || userProfile.displayName || 'Admin'
           },
-          userProfile
+          userProfile || undefined
         );
       }
       setBroadcastSuccess(true);
@@ -111,15 +111,16 @@ export const AdminAdministrationMonitoringView: React.FC = () => {
     }
   };
 
-  const getStatusBadge = (status: 'lengkap' | 'sebagian' | 'belum') => {
-    if (status === 'lengkap') {
+  const getStatusBadge = (status?: string) => {
+    const s = (status || '').toLowerCase();
+    if (s === 'lengkap') {
       return (
         <span className="px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold text-[10px]">
           Lengkap
         </span>
       );
     }
-    if (status === 'sebagian') {
+    if (s === 'sebagian') {
       return (
         <span className="px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-bold text-[10px]">
           Sebagian
@@ -134,16 +135,17 @@ export const AdminAdministrationMonitoringView: React.FC = () => {
   };
 
   const filtered = checklists.filter(t => {
+    const role = (t.roleTitle || t.roleType || '').toLowerCase();
     if (search.trim()) {
       const q = search.toLowerCase();
-      if (!t.teacherName.toLowerCase().includes(q) && !(t.roleTitle || '').toLowerCase().includes(q)) {
+      if (!t.teacherName.toLowerCase().includes(q) && !role.includes(q)) {
         return false;
       }
     }
     if (roleFilter !== 'all') {
-      if (roleFilter === 'wali' && !t.roleTitle.toLowerCase().includes('wali')) return false;
-      if (roleFilter === 'mapel' && !t.roleTitle.toLowerCase().includes('mapel')) return false;
-      if (roleFilter === 'agama' && !t.roleTitle.toLowerCase().includes('agama')) return false;
+      if (roleFilter === 'wali' && !role.includes('wali') && !role.includes('kelas')) return false;
+      if (roleFilter === 'mapel' && !role.includes('mapel')) return false;
+      if (roleFilter === 'agama' && !role.includes('agama')) return false;
     }
     return true;
   });
@@ -291,13 +293,13 @@ export const AdminAdministrationMonitoringView: React.FC = () => {
                       <p className="font-bold text-slate-900 dark:text-slate-100 text-xs">
                         {t.teacherName}
                       </p>
-                      <span className="text-[11px] text-slate-500">{t.roleTitle}</span>
+                      <span className="text-[11px] text-slate-500">{t.roleTitle || t.roleType}</span>
                     </td>
 
                     <td className="py-3 px-3 text-center">{getStatusBadge(t.protaStatus)}</td>
                     <td className="py-3 px-3 text-center">{getStatusBadge(t.promesStatus)}</td>
                     <td className="py-3 px-3 text-center">{getStatusBadge(t.atpStatus)}</td>
-                    <td className="py-3 px-3 text-center">{getStatusBadge(t.modulAjarStatus)}</td>
+                    <td className="py-3 px-3 text-center">{getStatusBadge(t.modulStatus || t.modulAjarStatus)}</td>
                     <td className="py-3 px-3 text-center">{getStatusBadge(t.kktpStatus)}</td>
                     <td className="py-3 px-3 text-center">{getStatusBadge(t.jurnalStatus)}</td>
                     <td className="py-3 px-3 text-center">{getStatusBadge(t.nilaiStatus)}</td>

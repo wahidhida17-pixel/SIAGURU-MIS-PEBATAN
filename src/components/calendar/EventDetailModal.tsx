@@ -22,7 +22,7 @@ interface EventDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   event: CalendarEvent | null;
-  currentUser: { uid: string; name: string; role?: 'admin' | 'guru' };
+  currentUser?: { uid: string; name?: string; role?: string; [key: string]: any };
   onEdit?: (event: CalendarEvent) => void;
   onDeleted?: () => void;
   onUpdated?: () => void;
@@ -95,9 +95,9 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
       // Also create an official document in documents collection so it's archived
       await documentService.createDocument(
         {
-          ownerId: currentUser.uid,
-          ownerName: currentUser.name,
-          ownerRole: currentUser.role || 'guru',
+          ownerId: currentUser?.uid || 'admin',
+          ownerName: currentUser?.name || currentUser?.displayName || 'Administrator',
+          ownerRole: currentUser?.role === 'admin' ? 'admin' : 'guru',
           title: `${reportType === 'notulen' ? 'Notulen Rapat' : 'Laporan Kegiatan'}: ${event.title}`,
           description: `Catatan resmi hasil kegiatan ${event.title} tanggal ${event.startDate}. Keputusan: ${reportDecisions}`,
           category: reportType === 'notulen' ? 'Rapat' : 'Kegiatan',

@@ -3,12 +3,23 @@ import { Plus, Edit2, ShieldCheck, Trash2 } from 'lucide-react';
 import { DataTable } from '../../../components/ui/DataTable';
 import { Button } from '../../../components/ui/Button';
 import { assignmentService } from '../../../services/assignmentService';
-import type { Assignment } from '../../../types/academic';
+import { teacherService } from '../../../services/teacherService';
+import { classService } from '../../../services/classService';
+import { subjectService } from '../../../services/subjectService';
+import type { Assignment, ClassData, Subject } from '../../../types/academic';
+import type { Teacher } from '../../../types/teacher';
+import { AssignmentFormModal } from './AssignmentFormModal';
 
 export const AssignmentList: React.FC = () => {
   const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [classes, setClasses] = useState<ClassData[]>([]);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -17,19 +28,52 @@ export const AssignmentList: React.FC = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const data = await assignmentService.getAll();
-      setAssignments(data);
+      const [assignmentsData, teachersData, classesData, subjectsData] = await Promise.all([
+        assignmentService.getAll(),
+        teacherService.getAll(),
+        classService.getAll(),
+        subjectService.getAll()
+      ]);
+      setAssignments(assignmentsData);
+      setTeachers(teachersData);
+      setClasses(classesData);
+      setSubjects(subjectsData);
     } catch (error) {
-      console.error('Error fetching assignments:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleAdd = () => {
+    setSelectedAssignment(null);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (window.confirm('Apakah Anda yakin ingin menghapus penugasan ini?')) {
+      try {
+        await assignmentService.delete(id);
+        fetchData();
+      } catch (err: any) {
+        alert(err.message || 'Gagal menghapus penugasan.');
+      }
+    }
+  };
+
+  const getTeacherName = (id: string) => teachers.find(t => t.id === id)?.name || id;
+  const getClassName = (id: string) => classes.find(c => c.id === id)?.name || id;
+  const getSubjectName = (id: string) => {
+    if (!id) return '-';
+    return subjects.find(s => s.id === id)?.name || id;
+  };
+
   const filteredData = assignments.filter(a => {
-    return a.teacherId.toLowerCase().includes(searchTerm.toLowerCase()) || 
-           a.subjectId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           a.classId.toLowerCase().includes(searchTerm.toLowerCase());
+    const teacherName = getTeacherName(a.teacherId).toLowerCase();
+    const subjectName = getSubjectName(a.subjectId).toLowerCase();
+    const className = getClassName(a.classId).toLowerCase();
+    const term = searchTerm.toLowerCase();
+    return teacherName.includes(term) || subjectName.includes(term) || className.includes(term);
   });
 
   return (
@@ -39,7 +83,7 @@ export const AssignmentList: React.FC = () => {
           <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Penugasan Guru</h2>
           <p className="text-slate-500 text-sm mt-1">Kelola relasi Guru, Mata Pelajaran, dan Kelas</p>
         </div>
-        <Button onClick={() => alert('Fitur tambah penugasan')} className="shrink-0">
+        <Button onClick={handleAdd} className="shrink-0">
           <Plus className="w-4 h-4 mr-2" />
           Buat Penugasan
         </Button>
@@ -49,7 +93,7 @@ export const AssignmentList: React.FC = () => {
         data={filteredData}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        searchPlaceholder="Cari ID guru, kelas, atau mapel..."
+        searchPlaceholder="Cari nama guru, kelas, atau mapel..."
         isLoading={isLoading}
         columns={[
           {
@@ -60,8 +104,8 @@ export const AssignmentList: React.FC = () => {
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-bold text-slate-800">{item.teacherId}</p>
-                  <p className="text-xs text-slate-500 font-medium">
+                  <p className="font-bold text-slate-800">{getTeacherName(item.teacherId)}</p>
+                  <p className="text-xs text-slate-500 font-medium capitalize">
                     {item.assignmentType.replace('_', ' ')}
                   </p>
                   <p className="text-xs text-emerald-600 mt-1 font-bold uppercase tracking-wider">
@@ -74,13 +118,13 @@ export const AssignmentList: React.FC = () => {
           {
             header: 'Mata Pelajaran',
             cell: (item) => (
-              <span className="text-sm font-medium text-slate-700">{item.subjectId || '-'}</span>
+              <span className="text-sm font-medium text-slate-700">{getSubjectName(item.subjectId)}</span>
             )
           },
           {
             header: 'Kelas',
             cell: (item) => (
-              <span className="text-sm font-medium text-slate-700">{item.classId}</span>
+              <span className="text-sm font-medium text-slate-700">{getClassName(item.classId)}</span>
             )
           },
           {
@@ -97,13 +141,22 @@ export const AssignmentList: React.FC = () => {
             header: 'Aksi',
             cell: (item) => (
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={() => alert('Hapus penugasan')}>
+                <Button variant="outline" size="sm" onClick={() => handleDelete(item.id!)}>
                   <Trash2 className="w-3.5 h-3.5 text-red-500" />
                 </Button>
               </div>
             )
           }
         ]}
+      />
+
+      <AssignmentFormModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={() => {
+          fetchData();
+        }}
+        assignment={selectedAssignment}
       />
     </div>
   );

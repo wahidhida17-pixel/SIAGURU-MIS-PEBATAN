@@ -80,10 +80,10 @@ export const AdminRemindersView: React.FC = () => {
               targetUserName: t.name,
               academicYear: '2026/2027',
               semester: 'Ganjil',
-              createdBy: userProfile!.uid,
-              createdByName: userProfile!.name
+              createdBy: userProfile?.uid || 'admin',
+              createdByName: userProfile?.name || userProfile?.displayName || 'Admin'
             },
-            userProfile
+            userProfile || undefined
           );
         }
       } else {
@@ -99,10 +99,10 @@ export const AdminRemindersView: React.FC = () => {
             targetUserName: targetTeacher?.name || 'Guru',
             academicYear: '2026/2027',
             semester: 'Ganjil',
-            createdBy: userProfile!.uid,
-            createdByName: userProfile!.name
+            createdBy: userProfile?.uid || 'admin',
+            createdByName: userProfile?.name || userProfile?.displayName || 'Admin'
           },
-          userProfile
+          userProfile || undefined
         );
       }
 
@@ -119,7 +119,7 @@ export const AdminRemindersView: React.FC = () => {
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Hapus notifikasi pengingat ini?')) {
-      await reminderService.deleteReminder(id, userProfile);
+      await reminderService.deleteReminder(id, userProfile || undefined);
       fetchData();
     }
   };

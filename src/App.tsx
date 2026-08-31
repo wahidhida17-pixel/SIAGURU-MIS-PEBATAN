@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { SchoolSettingsProvider } from './contexts/SchoolSettingsContext';
 import { AppRoutes } from './routes';
 import { Settings, ShieldAlert } from 'lucide-react';
 import appletConfig from '../firebase-applet-config.json';
@@ -121,9 +122,11 @@ export default function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <AuthProvider>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
+          <SchoolSettingsProvider>
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+          </SchoolSettingsProvider>
         </AuthProvider>
       </ThemeProvider>
     </ErrorBoundary>

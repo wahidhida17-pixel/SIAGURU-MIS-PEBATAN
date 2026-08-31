@@ -264,7 +264,7 @@ export const calendarService = {
 
   async createEvent(
     data: Omit<CalendarEvent, 'id' | 'createdAt' | 'updatedAt'>,
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<string> {
     const timestamp = new Date().toISOString();
     const payload = {
@@ -277,7 +277,7 @@ export const calendarService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'CREATE',
         'KALENDER',
         docRef.id,
@@ -291,7 +291,7 @@ export const calendarService = {
   async updateEvent(
     id: string,
     data: Partial<CalendarEvent>,
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<void> {
     const docRef = doc(db, 'calendarEvents', id);
     await updateDoc(docRef, {
@@ -302,7 +302,7 @@ export const calendarService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'UPDATE',
         'KALENDER',
         id,
@@ -311,12 +311,12 @@ export const calendarService = {
     }
   },
 
-  async deleteEvent(id: string, currentUser?: { uid: string; name: string }): Promise<void> {
+  async deleteEvent(id: string, currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }): Promise<void> {
     await deleteDoc(doc(db, 'calendarEvents', id));
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'DELETE',
         'KALENDER',
         id,
@@ -328,14 +328,14 @@ export const calendarService = {
   async saveEventReport(
     eventId: string,
     reportData: CalendarEvent['reportData'],
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<void> {
     const docRef = doc(db, 'calendarEvents', eventId);
     await updateDoc(docRef, {
       reportData: {
         ...reportData,
         recordedAt: new Date().toISOString(),
-        recordedBy: currentUser?.name || 'Administrator'
+        recordedBy: currentUser?.name || currentUser?.displayName || 'Administrator'
       },
       updatedAt: new Date().toISOString()
     });
@@ -343,7 +343,7 @@ export const calendarService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'REPORT_EVENT',
         'KALENDER',
         eventId,

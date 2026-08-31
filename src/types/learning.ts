@@ -64,6 +64,7 @@ export interface ATPItem {
   assessment?: string;
   assessmentMethod?: string;
   learningResources?: string;
+  p5ppra?: string[];
   notes?: string;
 }
 

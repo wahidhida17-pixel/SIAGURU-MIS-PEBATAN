@@ -213,7 +213,7 @@ export const GuruDashboard: React.FC = () => {
                     <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-100">
                       <Button
                         size="sm"
-                        variant={hasAtt ? 'outline' : 'default'}
+                        variant={hasAtt ? 'outline' : 'primary'}
                         onClick={() => navigate(`/guru/absensi?scheduleId=${s.id}&classId=${s.classId}&subjectId=${s.subjectId}&date=${todayStr}`)}
                         className="text-xs font-bold"
                       >
@@ -221,7 +221,7 @@ export const GuruDashboard: React.FC = () => {
                       </Button>
                       <Button
                         size="sm"
-                        variant={hasJrn ? 'outline' : 'default'}
+                        variant={hasJrn ? 'outline' : 'primary'}
                         onClick={() => navigate(`/guru/jurnal?scheduleId=${s.id}&classId=${s.classId}&subjectId=${s.subjectId}&date=${todayStr}&day=${s.day}&hour=${s.lessonHour}`)}
                         className="text-xs font-bold"
                       >
@@ -233,6 +233,30 @@ export const GuruDashboard: React.FC = () => {
               })}
           </div>
         )}
+      </div>
+
+      {/* AI Guru Spotlight Feature Card */}
+      <div className="rounded-3xl bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 p-6 text-white shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1 max-w-xl">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/20 text-emerald-100">
+            <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+            <span>Asisten Cerdas SIAGURU</span>
+          </div>
+          <h3 className="text-lg font-extrabold text-white">
+            Butuh Bantuan Modul Ajar, Bank Soal, atau Rubrik KKTP?
+          </h3>
+          <p className="text-xs text-emerald-100/90 leading-relaxed">
+            Gunakan AI Guru berbasis Gemini 3.7 Flash & Kurikulum Merdeka KMA 450 untuk membuat perangkat ajar dan instrumen asesmen madrasah secara instan.
+          </p>
+        </div>
+        <Link
+          to="/guru/ai"
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-white text-emerald-800 font-bold text-xs hover:bg-emerald-50 transition-all shadow-sm shrink-0 active:scale-95"
+        >
+          <Bot className="w-4 h-4 text-emerald-600" />
+          <span>Buka AI Guru Sekarang</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
       </div>
 
       {/* Quick Navigation Cards */}

@@ -162,7 +162,7 @@ export const documentService = {
   async createDocument(
     data: Omit<DocumentItem, 'id' | 'documentId' | 'createdAt' | 'updatedAt' | 'version' | 'status'>,
     file?: File,
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<string> {
     let fileMeta = {
       fileName: data.fileName || 'Dokumen_Administrasi.pdf',
@@ -205,7 +205,7 @@ export const documentService = {
           downloadUrl: fileMeta.downloadUrl,
           note: 'Versi awal dokumen',
           updatedBy: currentUser?.uid || data.ownerId,
-          updatedByName: currentUser?.name || data.ownerName,
+          updatedByName: currentUser?.name || currentUser?.displayName || data.ownerName,
           updatedAt: timestamp
         }
       ],
@@ -218,7 +218,7 @@ export const documentService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'CREATE',
         'DOKUMEN',
         docRef.id,
@@ -234,7 +234,7 @@ export const documentService = {
     data: Partial<DocumentItem>,
     newFile?: File,
     versionNote?: string,
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<void> {
     const docRef = doc(db, 'documents', id);
     const snap = await getDoc(docRef);
@@ -264,7 +264,7 @@ export const documentService = {
         downloadUrl: uploadRes.downloadUrl,
         note: versionNote || `Pembaruan file versi ${newVersion}`,
         updatedBy: currentUser?.uid || 'user',
-        updatedByName: currentUser?.name || 'Pengguna',
+        updatedByName: currentUser?.name || currentUser?.displayName || 'Pengguna',
         updatedAt: timestamp
       };
 
@@ -290,16 +290,16 @@ export const documentService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'UPDATE',
         'DOKUMEN',
         id,
-        `Memperbarui dokumen "${currentDoc.title}" (Versi ${newVersion})`
+        `Memperbarui dokumen "${currentDoc.title}" (versi ${newVersion})`
       );
     }
   },
 
-  async toggleFavorite(id: string, currentUser?: { uid: string; name: string }): Promise<boolean> {
+  async toggleFavorite(id: string, currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }): Promise<boolean> {
     const docRef = doc(db, 'documents', id);
     const snap = await getDoc(docRef);
     if (!snap.exists()) throw new Error('Dokumen tidak ditemukan.');
@@ -315,7 +315,7 @@ export const documentService = {
     return nextVal;
   },
 
-  async moveToTrash(id: string, currentUser?: { uid: string; name: string }): Promise<void> {
+  async moveToTrash(id: string, currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }): Promise<void> {
     const docRef = doc(db, 'documents', id);
     const snap = await getDoc(docRef);
     if (!snap.exists()) throw new Error('Dokumen tidak ditemukan.');
@@ -325,14 +325,14 @@ export const documentService = {
     await updateDoc(docRef, {
       status: 'deleted',
       deletedAt: new Date().toISOString(),
-      deletedBy: currentUser?.name || 'Pengguna',
+      deletedBy: currentUser?.name || currentUser?.displayName || 'Pengguna',
       updatedAt: new Date().toISOString()
     });
 
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'TRASH',
         'DOKUMEN',
         id,
@@ -341,7 +341,7 @@ export const documentService = {
     }
   },
 
-  async restoreFromTrash(id: string, currentUser?: { uid: string; name: string }): Promise<void> {
+  async restoreFromTrash(id: string, currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }): Promise<void> {
     const docRef = doc(db, 'documents', id);
     const snap = await getDoc(docRef);
     if (!snap.exists()) throw new Error('Dokumen tidak ditemukan.');
@@ -358,7 +358,7 @@ export const documentService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'RESTORE',
         'DOKUMEN',
         id,
@@ -367,7 +367,7 @@ export const documentService = {
     }
   },
 
-  async deletePermanently(id: string, currentUser?: { uid: string; name: string }): Promise<void> {
+  async deletePermanently(id: string, currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }): Promise<void> {
     const docRef = doc(db, 'documents', id);
     const snap = await getDoc(docRef);
     if (!snap.exists()) return;
@@ -382,7 +382,7 @@ export const documentService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'DELETE_PERMANENT',
         'DOKUMEN',
         id,
@@ -391,7 +391,7 @@ export const documentService = {
     }
   },
 
-  async permanentDelete(id: string, currentUser?: { uid: string; name: string }): Promise<void> {
+  async permanentDelete(id: string, currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }): Promise<void> {
     return this.deletePermanently(id, currentUser);
   },
 
@@ -399,7 +399,7 @@ export const documentService = {
     id: string,
     targetAcademicYear?: string,
     targetSemester?: Semester,
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<string> {
     const docRef = doc(db, 'documents', id);
     const snap = await getDoc(docRef);
@@ -425,7 +425,7 @@ export const documentService = {
           downloadUrl: sourceDoc.downloadUrl,
           note: `Salinan dari tahun ajaran ${sourceDoc.academicYear}`,
           updatedBy: currentUser?.uid || sourceDoc.ownerId,
-          updatedByName: currentUser?.name || sourceDoc.ownerName,
+          updatedByName: currentUser?.name || currentUser?.displayName || sourceDoc.ownerName,
           updatedAt: timestamp
         }
       ],
@@ -438,7 +438,7 @@ export const documentService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'DUPLICATE',
         'DOKUMEN',
         newDocRef.id,

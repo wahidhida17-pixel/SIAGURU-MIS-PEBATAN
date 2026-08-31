@@ -19,12 +19,13 @@ import { subjectService } from '../../services/subjectService';
 interface DocumentUploaderModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: (newDocId: string) => void;
-  currentUser: { uid: string; name: string; role?: 'admin' | 'guru' };
+  onSuccess: (newDocId?: any) => Promise<void> | void;
+  currentUser: { uid: string; name?: string; displayName?: string; role?: 'admin' | 'guru' | string };
+  defaultCategory?: string;
   initialData?: {
     academicYear?: string;
     semester?: Semester;
-    category?: DocumentCategory;
+    category?: DocumentCategory | string;
     classId?: string;
     subjectId?: string;
   };
@@ -35,10 +36,11 @@ export const DocumentUploaderModal: React.FC<DocumentUploaderModalProps> = ({
   onClose,
   onSuccess,
   currentUser,
+  defaultCategory,
   initialData
 }) => {
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState<string>(initialData?.category || 'Administrasi Pembelajaran');
+  const [category, setCategory] = useState<string>(defaultCategory || initialData?.category || 'Administrasi Pembelajaran');
   const [description, setDescription] = useState('');
   const [academicYear, setAcademicYear] = useState(initialData?.academicYear || '2026/2027');
   const [semester, setSemester] = useState<Semester>(initialData?.semester || 'Ganjil');
@@ -176,7 +178,7 @@ export const DocumentUploaderModal: React.FC<DocumentUploaderModalProps> = ({
         {
           ownerId: currentUser.uid,
           ownerName: currentUser.name,
-          ownerRole: currentUser.role || 'guru',
+          ownerRole: currentUser.role === 'admin' ? 'admin' : 'guru',
           title: title.trim(),
           description: description.trim(),
           category: category,

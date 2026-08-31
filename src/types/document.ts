@@ -187,17 +187,21 @@ export interface TeacherAdministrativeMonitoringRow {
   teacherId: string;
   teacherName: string;
   nip?: string;
-  roleType: 'Guru Kelas' | 'Guru Mapel' | 'Guru Mapel Agama';
+  roleType: 'Guru Kelas' | 'Guru Mapel' | 'Guru Mapel Agama' | string;
+  roleTitle?: string;
   classNames: string[];
   subjectNames: string[];
-  protaStatus: 'Lengkap' | 'Sebagian' | 'Belum';
-  promesStatus: 'Lengkap' | 'Sebagian' | 'Belum';
-  atpStatus: 'Lengkap' | 'Sebagian' | 'Belum';
-  modulStatus: 'Lengkap' | 'Sebagian' | 'Belum';
-  kktpStatus: 'Lengkap' | 'Sebagian' | 'Belum';
-  jurnalStatus: 'Lengkap' | 'Sebagian' | 'Belum';
-  nilaiStatus: 'Lengkap' | 'Sebagian' | 'Belum';
+  protaStatus: 'Lengkap' | 'Sebagian' | 'Belum' | string;
+  promesStatus: 'Lengkap' | 'Sebagian' | 'Belum' | string;
+  atpStatus: 'Lengkap' | 'Sebagian' | 'Belum' | string;
+  modulStatus: 'Lengkap' | 'Sebagian' | 'Belum' | string;
+  modulAjarStatus?: 'Lengkap' | 'Sebagian' | 'Belum' | string;
+  kktpStatus: 'Lengkap' | 'Sebagian' | 'Belum' | string;
+  jurnalStatus: 'Lengkap' | 'Sebagian' | 'Belum' | string;
+  nilaiStatus: 'Lengkap' | 'Sebagian' | 'Belum' | string;
   totalDocumentsCount: number;
   overallScorePercentage: number;
   score?: number;
 }
+
+export type TeacherAdminChecklist = TeacherAdministrativeMonitoringRow;

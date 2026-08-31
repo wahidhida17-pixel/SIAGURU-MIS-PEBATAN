@@ -90,7 +90,7 @@ export const AdminDocumentTemplatesView: React.FC = () => {
             fileType
           },
           uploadedFile || undefined,
-          userProfile
+          userProfile || undefined
         );
       } else {
         await templateService.createTemplate(
@@ -105,11 +105,11 @@ export const AdminDocumentTemplatesView: React.FC = () => {
             downloadUrl: '',
             isActive: true,
             usageCount: 0,
-            createdBy: userProfile!.uid,
-            createdByName: userProfile!.name
+            createdBy: userProfile?.uid || 'admin',
+            createdByName: userProfile?.name || userProfile?.displayName || 'Admin Madrasah'
           },
           uploadedFile || undefined,
-          userProfile
+          userProfile || undefined
         );
       }
 
@@ -123,13 +123,13 @@ export const AdminDocumentTemplatesView: React.FC = () => {
   };
 
   const handleToggleActive = async (t: DocumentTemplate) => {
-    await templateService.updateTemplate(t.id!, { isActive: !t.isActive }, undefined, userProfile);
+    await templateService.updateTemplate(t.id!, { isActive: !t.isActive }, undefined, userProfile || undefined);
     fetchTemplates();
   };
 
   const handleDelete = async (t: DocumentTemplate) => {
     if (window.confirm(`Hapus template "${t.title}"?`)) {
-      await templateService.deleteTemplate(t.id!, userProfile);
+      await templateService.deleteTemplate(t.id!, userProfile || undefined);
       fetchTemplates();
     }
   };

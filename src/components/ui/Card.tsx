@@ -43,6 +43,17 @@ export const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttrib
 );
 CardTitle.displayName = "CardTitle";
 
+export const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
+  ({ className, ...props }, ref) => (
+    <p 
+      ref={ref} 
+      className={cn("text-xs text-slate-500 dark:text-slate-400 mt-1", className)} 
+      {...props} 
+    />
+  )
+);
+CardDescription.displayName = "CardDescription";
+
 export const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div 

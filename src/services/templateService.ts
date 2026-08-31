@@ -222,7 +222,7 @@ export const templateService = {
   async createTemplate(
     data: any,
     file?: File,
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<string> {
     const timestamp = new Date().toISOString();
     let downloadUrl = data.downloadUrl || '';
@@ -263,7 +263,7 @@ export const templateService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'CREATE',
         'TEMPLATE_DOKUMEN',
         docRef.id,
@@ -278,7 +278,7 @@ export const templateService = {
     id: string,
     data: Partial<DocumentTemplate>,
     file?: File,
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<void> {
     const docRef = doc(db, 'documentTemplates', id);
     let updatedFields: any = { ...data };
@@ -309,7 +309,7 @@ export const templateService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'UPDATE',
         'TEMPLATE_DOKUMEN',
         id,
@@ -318,12 +318,12 @@ export const templateService = {
     }
   },
 
-  async deleteTemplate(id: string, currentUser?: { uid: string; name: string }): Promise<void> {
+  async deleteTemplate(id: string, currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }): Promise<void> {
     await deleteDoc(doc(db, 'documentTemplates', id));
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'DELETE',
         'TEMPLATE_DOKUMEN',
         id,

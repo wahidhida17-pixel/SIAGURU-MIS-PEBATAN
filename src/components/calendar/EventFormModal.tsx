@@ -10,7 +10,7 @@ interface EventFormModalProps {
   onSaved: () => void;
   eventToEdit?: CalendarEvent | null;
   initialDate?: string;
-  currentUser: { uid: string; name: string };
+  currentUser?: { uid: string; name?: string; role?: string; [key: string]: any };
 }
 
 export const EventFormModal: React.FC<EventFormModalProps> = ({

@@ -143,7 +143,7 @@ export const AdminCalendarView: React.FC = () => {
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
         eventToEdit={editingEvent}
-        currentUser={{ uid: userProfile!.uid, name: userProfile!.name, role: 'admin' }}
+        currentUser={userProfile ? { uid: userProfile.uid, name: userProfile.name || userProfile.displayName || 'Admin', role: 'admin' } : undefined}
         onSaved={() => fetchEvents()}
       />
 
@@ -151,7 +151,7 @@ export const AdminCalendarView: React.FC = () => {
         isOpen={isDetailOpen}
         onClose={() => setIsDetailOpen(false)}
         event={selectedEvent}
-        currentUser={{ uid: userProfile!.uid, name: userProfile!.name, role: 'admin' }}
+        currentUser={userProfile ? { uid: userProfile.uid, name: userProfile.name || userProfile.displayName || 'Admin', role: 'admin' } : undefined}
         onUpdated={() => fetchEvents()}
         onEdit={e => handleEdit(e)}
       />

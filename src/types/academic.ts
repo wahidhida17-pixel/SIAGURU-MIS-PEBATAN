@@ -15,17 +15,58 @@ export interface AcademicSettings {
 export interface GeneralSettings {
   schoolName: string;
   schoolLevel: string;
+  schoolStatus?: 'Negeri' | 'Swasta';
+  foundationName?: string;
   npsn?: string;
   nsm?: string;
+  nss?: string;
+  accreditation?: string;
+  accreditationNo?: string;
+  curriculum?: string;
+  kbcEnabled?: boolean;
+  kbcFocusThemes?: string[];
+  kbcNotes?: string;
+
   principalName?: string;
   principalNip?: string;
+  principalSignatureURL?: string;
+  signaturePlace?: string;
+  vicePrincipalName?: string;
+  treasurerName?: string;
+  committeeHeadName?: string;
+
   academicYear: string;
   semester: Semester;
+  semesterStartDate?: string;
+  semesterEndDate?: string;
+  reportDateGanjil?: string;
+  reportDateGenap?: string;
+
   logoURL: string;
+  logoFoundationURL?: string;
+  stampURL?: string;
+
   address: string;
+  rtRw?: string;
+  village?: string;
+  district?: string;
+  city?: string;
+  province?: string;
+  postalCode?: string;
   phone: string;
+  fax?: string;
   email: string;
+  website?: string;
+
+  letterheadLine1?: string;
+  letterheadLine2?: string;
+  letterheadLine3?: string;
+  letterheadLine4?: string;
+  showDoubleLine?: boolean;
+  autoStampInReports?: boolean;
+
   updatedAt: any;
+  updatedBy?: string;
 }
 
 export interface Student {
@@ -53,8 +94,10 @@ export interface ClassData {
   id?: string;
   name: string; // e.g. "6A"
   gradeLevel: number; // 1-6
+  level?: number; // alias for gradeLevel
   parallel: string; // A, B, C
   homeroomTeacherId: string;
+  homeroomTeacherName?: string;
   academicYear: string;
   status: ActiveStatus;
   createdAt?: any;
@@ -79,8 +122,11 @@ export interface Subject {
 export interface Assignment {
   id?: string;
   teacherId: string;
+  teacherName?: string;
   subjectId: string; // Kosong jika guru kelas dan tidak spesifik
+  subjectName?: string;
   classId: string;
+  className?: string;
   academicYear: string;
   semester: Semester;
   assignmentType: AssignmentType;

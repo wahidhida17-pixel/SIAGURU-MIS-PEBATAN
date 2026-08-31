@@ -154,7 +154,7 @@ export const letterService = {
   async createLetter(
     data: any,
     file?: File,
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<string> {
     const timestamp = new Date().toISOString();
     let attachmentUrl = data.attachmentUrl;
@@ -184,7 +184,7 @@ export const letterService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'CREATE',
         'SURAT',
         docRef.id,
@@ -198,7 +198,7 @@ export const letterService = {
   async updateLetter(
     id: string,
     data: Partial<OfficialLetter | Letter>,
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<void> {
     const docRef = doc(db, 'letters', id);
     await updateDoc(docRef, {
@@ -209,7 +209,7 @@ export const letterService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'UPDATE',
         'SURAT',
         id,
@@ -218,12 +218,12 @@ export const letterService = {
     }
   },
 
-  async deleteLetter(id: string, currentUser?: { uid: string; name: string }): Promise<void> {
+  async deleteLetter(id: string, currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }): Promise<void> {
     await deleteDoc(doc(db, 'letters', id));
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'DELETE',
         'SURAT',
         id,

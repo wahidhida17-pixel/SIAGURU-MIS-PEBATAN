@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../hooks/useTheme';
+import { useSchoolSettings } from '../contexts/SchoolSettingsContext';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { Avatar } from '../components/ui/Avatar';
 import { SchoolLogo } from '../components/common/SchoolLogo';
@@ -19,6 +20,7 @@ import { ThemeSwitcherModal } from '../components/theme/ThemeSwitcherModal';
 export const AdminLayout: React.FC = () => {
   const { isAuthenticated, role, userProfile, loading } = useAuth();
   const { currentThemeOption, resolvedMode } = useTheme();
+  const { settings } = useSchoolSettings();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
@@ -46,7 +48,7 @@ export const AdminLayout: React.FC = () => {
     { name: 'Monitoring Guru', href: '/admin/documents/monitoring', icon: ClipboardList },
     { name: 'Kalender Akademik', href: '/admin/calendar', icon: CalendarDays },
     { name: 'Monitoring KBM', href: '/admin/monitoring', icon: Activity },
-    { name: 'Pengaturan Akun', href: '/admin/pengaturan', icon: Settings },
+    { name: 'Pengaturan Sekolah', href: '/admin/pengaturan', icon: Settings },
     { name: 'Profil', href: '/admin/profile', icon: User },
   ];
 
@@ -77,7 +79,9 @@ export const AdminLayout: React.FC = () => {
             <SchoolLogo size="md" variant="circle" />
             <div>
               <h1 className="font-bold text-white text-lg leading-tight tracking-tight">SIAGURU</h1>
-              <p className="text-white/70 text-[10px] uppercase font-bold tracking-wider">MI Syuriyah Pebatan</p>
+              <p className="text-white/70 text-[10px] uppercase font-bold tracking-wider truncate max-w-[140px]" title={settings?.schoolName}>
+                {settings?.schoolName || 'MI Syuriyah Pebatan'}
+              </p>
             </div>
           </div>
         </div>
@@ -147,14 +151,18 @@ export const AdminLayout: React.FC = () => {
             <h1 className="font-bold text-slate-800 dark:text-slate-100 text-lg tracking-tight">SIAGURU</h1>
           </div>
           <div className="hidden lg:block">
-            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">SIAGURU MI SYURIYAH PEBATAN</p>
+            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+              SIAGURU {settings?.schoolName?.toUpperCase() || 'MI SYURIYAH PEBATAN'}
+            </p>
             <h2 className="font-bold text-slate-800 dark:text-slate-100 text-lg">Dashboard Admin</h2>
           </div>
           
           <div className="flex items-center gap-2.5 sm:gap-4">
             <div className="hidden md:block text-right">
               <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none">Tahun Pelajaran</p>
-              <p className="text-xs font-bold" style={{ color: currentThemeOption.primaryHex }}>2026/2027 • Ganjil</p>
+              <p className="text-xs font-bold" style={{ color: currentThemeOption.primaryHex }}>
+                {settings?.academicYear || '2026/2027'} &bull; {settings?.semester || 'Ganjil'}
+              </p>
             </div>
             
             <div className="hidden sm:block w-px h-8 bg-slate-200 dark:bg-slate-800"></div>

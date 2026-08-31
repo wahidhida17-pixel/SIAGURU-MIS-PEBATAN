@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSchoolSettings } from '../../contexts/SchoolSettingsContext';
 
 interface SchoolLogoProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'hero';
@@ -7,6 +8,8 @@ interface SchoolLogoProps {
   textClassName?: string;
   subtextClassName?: string;
   variant?: 'circle' | 'rounded' | 'plain';
+  customLogoUrl?: string;
+  customSchoolName?: string;
 }
 
 const sizeMap = {
@@ -25,8 +28,11 @@ export const SchoolLogo: React.FC<SchoolLogoProps> = ({
   showText = false,
   textClassName = '',
   subtextClassName = '',
-  variant = 'circle'
+  variant = 'circle',
+  customLogoUrl,
+  customSchoolName
 }) => {
+  const { settings } = useSchoolSettings();
   const sizeClass = sizeMap[size] || sizeMap.md;
 
   const shapeClass = 
@@ -36,15 +42,22 @@ export const SchoolLogo: React.FC<SchoolLogoProps> = ({
       ? 'rounded-2xl' 
       : '';
 
+  const logoSrc = customLogoUrl || settings?.logoURL || '/logo.svg';
+  const schoolName = customSchoolName || settings?.schoolName || 'MI Syuriyah Pebatan';
+
   return (
     <div className={`inline-flex items-center gap-3 ${className}`}>
-      <div className={`relative shrink-0 overflow-hidden ${sizeClass} ${shapeClass} transition-transform hover:scale-105 shadow-sm`}>
+      <div className={`relative shrink-0 overflow-hidden ${sizeClass} ${shapeClass} transition-transform hover:scale-105 shadow-sm bg-white/10`}>
         <img
-          src="/logo.svg"
-          alt="Logo MI Syuriyah Pebatan"
+          src={logoSrc}
+          alt={`Logo ${schoolName}`}
           className="w-full h-full object-contain select-none pointer-events-none"
           referrerPolicy="no-referrer"
           loading="eager"
+          onError={(e) => {
+            // Fallback if custom URL fails to load
+            (e.target as HTMLImageElement).src = '/logo.svg';
+          }}
         />
       </div>
 
@@ -54,10 +67,11 @@ export const SchoolLogo: React.FC<SchoolLogoProps> = ({
             SIAGURU
           </span>
           <span className={`text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider ${subtextClassName || ''}`}>
-            MI Syuriyah Pebatan
+            {schoolName}
           </span>
         </div>
       )}
     </div>
   );
 };
+

@@ -95,7 +95,11 @@ import { AdminTrashView as AdminDocumentTrashView } from '../pages/admin/documen
 
 import { AdminCalendarView } from '../pages/admin/calendar/AdminCalendarView';
 import { AdminRemindersView } from '../pages/admin/calendar/AdminRemindersView';
+import { SchoolSettings } from '../pages/admin/settings/SchoolSettings';
 import { AccountSettings } from '../pages/admin/settings/AccountSettings';
+
+// Phase 8: AI Guru Cerdas Madrasah
+import { AIGuruDashboard } from '../pages/guru/ai/AIGuruDashboard';
 
 // Phase 8: Headmaster
 import { HeadmasterDashboardView } from '../pages/headmaster/dashboard/HeadmasterDashboardView';
@@ -190,7 +194,10 @@ export const AppRoutes: React.FC = () => {
         <Route path="calendar" element={<AdminCalendarView />} />
         <Route path="calendar/reminders" element={<AdminRemindersView />} />
 
-        <Route path="pengaturan" element={<AccountSettings />} />
+        <Route path="pengaturan" element={<SchoolSettings />} />
+        <Route path="settings" element={<SchoolSettings />} />
+        <Route path="pengaturan/sekolah" element={<SchoolSettings />} />
+        <Route path="pengaturan/akun" element={<AccountSettings />} />
         <Route path="profile" element={<Profile />} />
       </Route>
 
@@ -251,8 +258,8 @@ export const AppRoutes: React.FC = () => {
         <Route path="agenda" element={<GuruAgendaView />} />
         <Route path="reminders" element={<GuruRemindersView />} />
 
-        {/* Placeholders for Future Phases */}
-        <Route path="ai" element={<ComingSoon />} />
+        {/* Phase 8: AI Guru Cerdas Madrasah */}
+        <Route path="ai" element={<AIGuruDashboard />} />
         <Route path="profile" element={<Profile />} />
       </Route>
 

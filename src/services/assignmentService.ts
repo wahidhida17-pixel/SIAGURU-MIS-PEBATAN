@@ -64,5 +64,11 @@ export const assignmentService = {
       ...data,
       updatedAt: new Date().toISOString(),
     });
+  },
+
+  async delete(id: string): Promise<void> {
+    const { deleteDoc } = await import('firebase/firestore');
+    const docRef = doc(db, COLLECTION_NAME, id);
+    await deleteDoc(docRef);
   }
 };

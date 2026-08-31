@@ -6,11 +6,19 @@ interface AvatarProps {
   alt?: string;
   fallback: string;
   className?: string;
+  style?: React.CSSProperties;
+  onClick?: () => void;
+  title?: string;
 }
 
-export const Avatar: React.FC<AvatarProps> = ({ src, alt, fallback, className }) => {
+export const Avatar: React.FC<AvatarProps> = ({ src, alt, fallback, className, style, onClick, title }) => {
   return (
-    <div className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full bg-emerald-100", className)}>
+    <div
+      className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full bg-emerald-100", className)}
+      style={style}
+      onClick={onClick}
+      title={title}
+    >
       {src ? (
         <img className="aspect-square h-full w-full object-cover" src={src} alt={alt || "Avatar"} />
       ) : (

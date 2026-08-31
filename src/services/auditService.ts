@@ -5,20 +5,20 @@ import type { AuditLog } from '../types/academic';
 export const auditService = {
   async log(
     userId: string,
-    userName: string,
-    action: string,
-    module: string,
-    targetId: string,
-    description: string
+    userName?: string,
+    action?: string,
+    module?: string,
+    targetId?: string,
+    description?: string
   ): Promise<void> {
     try {
       await addDoc(collection(db, 'auditLogs'), {
         userId,
-        userName,
-        action,
-        module,
-        targetId,
-        description,
+        userName: userName || 'Pengguna',
+        action: action || 'ACTION',
+        module: module || 'SYSTEM',
+        targetId: targetId || '',
+        description: description || '',
         createdAt: new Date().toISOString()
       });
     } catch (error) {

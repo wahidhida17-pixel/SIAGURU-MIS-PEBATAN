@@ -36,7 +36,7 @@ export const reminderService = {
 
   async createReminder(
     data: Omit<ReminderItem, 'id' | 'createdAt' | 'isDismissed'>,
-    currentUser?: { uid: string; name: string }
+    currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }
   ): Promise<string> {
     const timestamp = new Date().toISOString();
     const payload = {
@@ -59,7 +59,7 @@ export const reminderService = {
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'CREATE',
         'PENGINGAT',
         docRef.id,
@@ -70,13 +70,13 @@ export const reminderService = {
     return docRef.id;
   },
 
-  async dismissReminder(id: string, currentUser?: { uid: string; name: string }): Promise<void> {
+  async dismissReminder(id: string, currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }): Promise<void> {
     const docRef = doc(db, 'reminders', id);
     await updateDoc(docRef, { isDismissed: true });
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'DISMISS',
         'PENGINGAT',
         id,
@@ -85,12 +85,12 @@ export const reminderService = {
     }
   },
 
-  async deleteReminder(id: string, currentUser?: { uid: string; name: string }): Promise<void> {
+  async deleteReminder(id: string, currentUser?: { uid: string; name?: string; displayName?: string; [key: string]: any }): Promise<void> {
     await deleteDoc(doc(db, 'reminders', id));
     if (currentUser) {
       await auditService.log(
         currentUser.uid,
-        currentUser.name,
+        currentUser.name || currentUser.displayName || 'Pengguna',
         'DELETE',
         'PENGINGAT',
         id,

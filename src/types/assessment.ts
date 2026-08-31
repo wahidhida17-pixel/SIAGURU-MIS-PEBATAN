@@ -187,6 +187,8 @@ export interface TeacherAssessmentProgress {
   gradesEntered: number;
   gradesExpected: number;
   completionPercentage: number;
+  percentage?: number; // alias for completionPercentage
   isLocked: boolean;
+  isComplete?: boolean;
   status: 'Belum dimulai' | 'Draft' | 'Sedang diisi' | 'Lengkap' | 'Dikunci';
 }

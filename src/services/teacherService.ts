@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, addDoc, updateDoc, query, where, orderBy, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where, orderBy, setDoc } from 'firebase/firestore';
 import { db } from '../firebase/firestore';
 import type { Teacher } from '../types/teacher';
 
@@ -73,5 +73,10 @@ export const teacherService = {
       ...data,
       updatedAt: new Date().toISOString(),
     });
+  },
+
+  async delete(id: string): Promise<void> {
+    const docRef = doc(db, COLLECTION_NAME, id);
+    await deleteDoc(docRef);
   }
 };
