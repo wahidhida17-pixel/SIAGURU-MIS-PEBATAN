@@ -7,9 +7,13 @@ const COLLECTION_NAME = 'classes';
 export const classService = {
   async getAll(): Promise<ClassData[]> {
     try {
-      const q = query(collection(db, COLLECTION_NAME), orderBy('gradeLevel', 'asc'), orderBy('parallel', 'asc'));
+      const q = query(collection(db, COLLECTION_NAME));
       const snapshot = await getDocs(q);
-      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as ClassData));
+      const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as ClassData));
+      return list.sort((a, b) => {
+        if (a.gradeLevel !== b.gradeLevel) return String(a.gradeLevel).localeCompare(String(b.gradeLevel));
+        return (a.parallel || '').localeCompare(b.parallel || '');
+      });
     } catch (err) {
       console.warn('Error fetching classes:', err);
       return [];
@@ -18,9 +22,14 @@ export const classService = {
 
   async getActive(): Promise<ClassData[]> {
     try {
-      const q = query(collection(db, COLLECTION_NAME), where('status', '==', 'active'), orderBy('gradeLevel', 'asc'));
+      const q = query(collection(db, COLLECTION_NAME));
       const snapshot = await getDocs(q);
-      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as ClassData));
+      const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as ClassData));
+      const activeList = list.filter(c => c.status === 'active');
+      return activeList.sort((a, b) => {
+        if (a.gradeLevel !== b.gradeLevel) return String(a.gradeLevel).localeCompare(String(b.gradeLevel));
+        return (a.parallel || '').localeCompare(b.parallel || '');
+      });
     } catch (err) {
       console.warn('Error fetching active classes:', err);
       return [];

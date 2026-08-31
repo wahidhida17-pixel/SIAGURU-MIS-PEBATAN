@@ -7,9 +7,13 @@ const COLLECTION_NAME = 'subjects';
 export const subjectService = {
   async getAll(): Promise<Subject[]> {
     try {
-      const q = query(collection(db, COLLECTION_NAME), orderBy('category', 'asc'), orderBy('name', 'asc'));
+      const q = query(collection(db, COLLECTION_NAME));
       const snapshot = await getDocs(q);
-      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Subject));
+      const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Subject));
+      return list.sort((a, b) => {
+        if (a.category !== b.category) return String(a.category).localeCompare(String(b.category));
+        return (a.name || '').localeCompare(b.name || '');
+      });
     } catch (err) {
       console.warn('Error fetching subjects:', err);
       return [];
@@ -18,9 +22,11 @@ export const subjectService = {
 
   async getActive(): Promise<Subject[]> {
     try {
-      const q = query(collection(db, COLLECTION_NAME), where('status', '==', 'active'), orderBy('name', 'asc'));
+      const q = query(collection(db, COLLECTION_NAME));
       const snapshot = await getDocs(q);
-      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Subject));
+      const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Subject));
+      const activeList = list.filter(s => s.status === 'active');
+      return activeList.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
     } catch (err) {
       console.warn('Error fetching active subjects:', err);
       return [];
