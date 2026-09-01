@@ -416,14 +416,16 @@ app.post('/api/gemini/generate', async (req: Request, res: Response) => {
 
 
 // PWA Dynamic Endpoints
-async function getGeneralSettings() {
+async function getGeneralSettings(): Promise<Record<string, any>> {
   const appletConfigPath = path.join(process.cwd(), 'firebase-applet-config.json');
   let projectId = 'siaguru-aba53';
   if (fs.existsSync(appletConfigPath)) {
     try {
       const config = JSON.parse(fs.readFileSync(appletConfigPath, 'utf8'));
       if (config.projectId) projectId = config.projectId;
-    } catch(e) {}
+    } catch {
+      // ignore
+    }
   }
   
   return new Promise((resolve) => {
@@ -434,7 +436,7 @@ async function getGeneralSettings() {
         try {
           const json = JSON.parse(data);
           resolve(json.fields || {});
-        } catch(e) {
+        } catch {
           resolve({});
         }
       });
@@ -442,7 +444,7 @@ async function getGeneralSettings() {
   });
 }
 
-function serveImage(val, res, next) {
+function serveImage(val: string | undefined, res: Response, next: () => void) {
   if (!val) return next();
   if (val.startsWith('http')) return res.redirect(val);
   const match = val.match(/^data:image\/([a-zA-Z0-9+-]+);base64,(.+)$/);
@@ -456,7 +458,7 @@ function serveImage(val, res, next) {
       'Cache-Control': 'public, max-age=60'
     });
     res.end(buffer);
-  } catch (e) {
+  } catch {
     next();
   }
 }
@@ -512,4 +514,9 @@ async function start() {
   });
 }
 
-start();
+if (!process.env.VERCEL) {
+  start();
+}
+
+export default app;
+
