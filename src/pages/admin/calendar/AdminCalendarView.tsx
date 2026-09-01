@@ -9,7 +9,8 @@ import {
   Filter,
   FileText,
   Trash2,
-  Edit2
+  Edit2,
+  RefreshCw
 } from 'lucide-react';
 import { useAuth } from '../../../hooks/useAuth';
 import { calendarService } from '../../../services/calendarService';
@@ -27,6 +28,7 @@ export const AdminCalendarView: React.FC = () => {
   const [typeFilter, setTypeFilter] = useState<string>('all');
 
   // Modals
+  const [isSyncing, setIsSyncing] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
@@ -47,6 +49,20 @@ export const AdminCalendarView: React.FC = () => {
       console.error('Error loading admin calendar events:', e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSyncKemenag = async () => {
+    try {
+      setIsSyncing(true);
+      await calendarService.syncKemenagCalendar('2026/2027');
+      await fetchEvents();
+      alert('Berhasil menyinkronkan Kalender Akademik Kemenag.');
+    } catch (e) {
+      console.error('Error syncing kemenag calendar:', e);
+      alert('Gagal menyinkronkan jadwal Kemenag.');
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -105,12 +121,22 @@ export const AdminCalendarView: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={handleCreateNew}
-          className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs flex items-center gap-2 shadow-xs transition-colors self-start sm:self-auto"
-        >
-          <Plus className="w-4 h-4" /> + Tambah Kegiatan / Agenda Baru
-        </button>
+        <div className="flex flex-col sm:flex-row gap-2 self-start sm:self-auto">
+          <button
+            onClick={handleSyncKemenag}
+            disabled={isSyncing}
+            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs flex items-center gap-2 shadow-xs transition-colors disabled:opacity-70"
+          >
+            <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} /> 
+            {isSyncing ? 'Menyinkronkan...' : 'Sinkron Kalender Kemenag'}
+          </button>
+          <button
+            onClick={handleCreateNew}
+            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs flex items-center gap-2 shadow-xs transition-colors"
+          >
+            <Plus className="w-4 h-4" /> Tambah Kegiatan
+          </button>
+        </div>
       </div>
 
       {/* Filter Tabs */}
