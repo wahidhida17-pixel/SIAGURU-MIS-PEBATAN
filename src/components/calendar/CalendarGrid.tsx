@@ -26,11 +26,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
   onAddEvent,
   userRole = 'guru'
 }) => {
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 7, 28)); // August 2026 default
+  const [currentDate, setCurrentDate] = useState(new Date()); 
   const [viewMode, setViewMode] = useState<'month' | 'week' | 'agenda'>('month');
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
+
+  const todayDate = new Date();
+  const todayStr = `${todayDate.getFullYear()}-${String(todayDate.getMonth() + 1).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
 
   const monthNames = [
     'Januari',
@@ -58,7 +61,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
   };
 
   const goToToday = () => {
-    setCurrentDate(new Date(2026, 7, 28));
+    setCurrentDate(new Date());
   };
 
   // Month calculation
@@ -231,7 +234,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
           <div className="grid grid-cols-7 gap-1 sm:gap-2">
             {calendarCells.map((cell, idx) => {
               const dayEvents = getEventsForDate(cell.dateStr);
-              const isToday = cell.dateStr === '2026-08-28';
+              const isToday = cell.dateStr === todayStr;
               const isSunday = (idx % 7) === 6;
 
               return (
