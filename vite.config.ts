@@ -9,33 +9,7 @@ export default defineConfig(() => {
     plugins: [
       react(), 
       tailwindcss(),
-      VitePWA({
-        registerType: 'autoUpdate',
-        includeAssets: ['logo.svg'],
-        workbox: {
-          maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
-        },
-        manifest: {
-          name: 'SIAGURU MI SYURIYAH PEBATAN',
-          short_name: 'SIAGURU',
-          description: 'Sistem Administrasi Guru MI Syuriyah Pebatan',
-          theme_color: '#059669',
-          background_color: '#ffffff',
-          display: 'standalone',
-          icons: [
-            {
-              src: 'logo.svg',
-              sizes: '192x192',
-              type: 'image/svg+xml'
-            },
-            {
-              src: 'logo.svg',
-              sizes: '512x512',
-              type: 'image/svg+xml'
-            }
-          ]
-        }
-      })
+      VitePWA({ registerType: "autoUpdate", workbox: { maximumFileSizeToCacheInBytes: 6 * 1024 * 1024 } })
     ],
     resolve: {
       alias: {
