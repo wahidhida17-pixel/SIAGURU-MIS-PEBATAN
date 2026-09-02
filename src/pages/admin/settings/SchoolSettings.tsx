@@ -417,6 +417,7 @@ export const SchoolSettings: React.FC = () => {
                 value={formData.logoURL}
                 onChange={(newUrl) => handleChange('logoURL', newUrl)}
                 presetOptions={PRESET_LOGOS}
+                maxDimension={256}
                 placeholderText="Tarik dan lepas logo madrasah di sini atau klik untuk memilih"
               />
             </CardContent>
@@ -441,6 +442,7 @@ export const SchoolSettings: React.FC = () => {
                   value={formData.logoFoundationURL || ''}
                   onChange={(val) => handleChange('logoFoundationURL', val)}
                   presetOptions={PRESET_LOGOS}
+                  maxDimension={256}
                   placeholderText="Pilih logo yayasan atau kemenag"
                 />
               </CardContent>
@@ -463,6 +465,7 @@ export const SchoolSettings: React.FC = () => {
                   sublabel="Format PNG dengan latar transparan disarankan."
                   value={formData.stampURL || ''}
                   onChange={(val) => handleChange('stampURL', val)}
+                  maxDimension={300}
                   placeholderText="Unggah stempel resmi madrasah"
                 />
               </CardContent>
@@ -478,7 +481,7 @@ export const SchoolSettings: React.FC = () => {
                   Icon Aplikasi (PWA / Mobile)
                 </CardTitle>
                 <CardDescription className="text-xs">
-                  Ikon persegi (resolusi 512x512) untuk ikon aplikasi di perangkat seluler (Home Screen).
+                  Ikon persegi (otomatis dikompresi) untuk ikon aplikasi di perangkat seluler (Home Screen).
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -487,6 +490,7 @@ export const SchoolSettings: React.FC = () => {
                   sublabel="Disarankan rasio 1:1 format PNG atau WebP."
                   value={formData.appIconURL || ''}
                   onChange={(val) => handleChange('appIconURL', val)}
+                  maxDimension={256}
                   placeholderText="Unggah icon aplikasi"
                 />
               </CardContent>
@@ -509,6 +513,7 @@ export const SchoolSettings: React.FC = () => {
                   sublabel="Disarankan rasio 1:1 format PNG / ICO."
                   value={formData.faviconURL || ''}
                   onChange={(val) => handleChange('faviconURL', val)}
+                  maxDimension={192}
                   placeholderText="Unggah favicon browser"
                 />
               </CardContent>
@@ -533,6 +538,7 @@ export const SchoolSettings: React.FC = () => {
                 value={formData.principalSignatureURL || ''}
                 onChange={(val) => handleChange('principalSignatureURL', val)}
                 aspectRatio="wide"
+                maxDimension={300}
                 placeholderText="Unggah scan tanda tangan kepala sekolah"
               />
             </CardContent>

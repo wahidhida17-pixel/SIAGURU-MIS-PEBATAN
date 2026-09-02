@@ -2,6 +2,8 @@ import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firestore';
 import type { GeneralSettings } from '../types/academic';
 
+import { sanitizeGeneralSettingsImages } from '../utils/imageCompressor';
+
 export const DEFAULT_SCHOOL_SETTINGS: GeneralSettings = {
   schoolName: "MI Syuriyah Pebatan",
   schoolLevel: "Madrasah Ibtidaiyah",
@@ -97,6 +99,7 @@ export const settingsService = {
 
   async updateGeneralSettings(data: Partial<GeneralSettings>): Promise<void> {
     const docRef = doc(db, 'settings', 'general');
-    await setDoc(docRef, { ...data, updatedAt: new Date().toISOString() }, { merge: true });
+    const sanitizedData = await sanitizeGeneralSettingsImages(data);
+    await setDoc(docRef, { ...sanitizedData, updatedAt: new Date().toISOString() }, { merge: true });
   }
 };

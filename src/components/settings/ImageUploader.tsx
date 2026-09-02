@@ -20,7 +20,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   onChange,
   presetOptions = [],
   aspectRatio = 'square',
-  maxDimension = 512,
+  maxDimension = 256,
   placeholderText = 'Klik atau seret gambar ke sini',
   disabled = false
 }) => {
@@ -47,8 +47,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
     setIsProcessing(true);
 
-    // If SVG, read as text/dataURL directly to preserve vector sharpness
-    if (file.type === 'image/svg+xml') {
+    // If small SVG (< 40KB), read directly to preserve vector sharpness
+    if (file.type === 'image/svg+xml' && file.size < 40 * 1024) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const result = e.target?.result as string;
@@ -63,7 +63,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       return;
     }
 
-    // For raster images (PNG, JPG, WEBP), process and optimize via Canvas
+    // Process and optimize raster images & large SVGs via Canvas
     const reader = new FileReader();
     reader.onload = (event) => {
       const img = new Image();
@@ -94,10 +94,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         // Draw image onto canvas
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Export as WebP or PNG (PNG preserves alpha transparency for logos & stamps)
-        const format = file.type === 'image/jpeg' ? 'image/jpeg' : 'image/png';
-        const quality = format === 'image/jpeg' ? 0.9 : undefined;
-        const dataUrl = canvas.toDataURL(format, quality);
+        // Try WebP first for high compression and alpha transparency support
+        let dataUrl = canvas.toDataURL('image/webp', 0.8);
+        if (!dataUrl.startsWith('data:image/webp')) {
+          dataUrl = canvas.toDataURL('image/png');
+        }
 
         onChange(dataUrl);
         setIsProcessing(false);
